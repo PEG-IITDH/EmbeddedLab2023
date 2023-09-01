@@ -8,6 +8,7 @@
  */
 
 void counter_loop (void);
+void GPIO_PORTF_Init(void);
 
 int main(void)
 
@@ -26,12 +27,10 @@ x   GPIODEN -- GPIO Digital Enable -- 0x00011111 >> 0x1F
 
 {
 
+    GPIO_PORTF_Init();
     register uint32_t x = ZERO_DEF;
 
-    SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOF;
-    GPIO_PORTF_DEN_R  = 0x1F;
-    GPIO_PORTF_PUR_R  = 0x11;
-    GPIO_PORTF_DIR_R  = 0x0E;
+
     GPIO_PORTF_DATA_R = 0xE;
     while(1)
     {
@@ -51,6 +50,13 @@ x   GPIODEN -- GPIO Digital Enable -- 0x00011111 >> 0x1F
     }
 }
 
+void GPIO_PORTF_Init(void)
+{
+    SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOF;
+    GPIO_PORTF_DEN_R  = 0x1F;
+    GPIO_PORTF_PUR_R  = 0x11;
+    GPIO_PORTF_DIR_R  = 0x0E;
+}
 
 void counter_loop (void)
 {
