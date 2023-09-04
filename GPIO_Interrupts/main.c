@@ -39,6 +39,7 @@ void SW2_Handler(void)
     }
 
     GPIO_PORTF_ICR_R = 0x11;
+    __asm(" nop");
 }
 
 
