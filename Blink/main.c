@@ -31,15 +31,15 @@ x   GPIODEN -- GPIO Digital Enable -- 0x00011111 >> 0x1F
     register uint32_t x = ZERO_DEF;
 
 
-    GPIO_PORTF_DATA_R = 0xE;
-    while(1)
-    {
-        GPIO_PORTF_DATA_R = 0x0;
-        GPIO_PORTF_DATA_R = 0x2;
-        GPIO_PORTF_DATA_R = 0x4;
-        GPIO_PORTF_DATA_R = 0x8;
-        GPIO_PORTF_DATA_R = 0xE;
-    }
+    GPIO_PORTF_DATA_R = 0x4;
+//    while(1)
+//    {
+//        GPIO_PORTF_DATA_R = 0x0;
+//        GPIO_PORTF_DATA_R = 0x2;
+//        GPIO_PORTF_DATA_R = 0x4;
+//        GPIO_PORTF_DATA_R = 0x8;
+//        GPIO_PORTF_DATA_R = 0xE;
+//    }
 
 
 
@@ -47,6 +47,7 @@ x   GPIODEN -- GPIO Digital Enable -- 0x00011111 >> 0x1F
     {
         x++;
         counter_loop();
+        GPIO_PORTF_DATA_R ^= 0x2;
     }
 }
 
@@ -60,7 +61,7 @@ void GPIO_PORTF_Init(void)
 
 void counter_loop (void)
 {
-    register uint32_t count=10;
+    uint32_t count = 0xFFFFFF;
     while(count>0)
         count--;
 

@@ -10,13 +10,11 @@ void SystickHandler(void);
 void Systick_Init(void);
 
 volatile uint32_t systick_count = 1;
-
+volatile uint32_t global_counter = 0;
 
 
 int main(void)
 {
-
-
 
     GPIO_PORTF_Init();
     //Systick_Init();
@@ -26,8 +24,13 @@ int main(void)
 
 void SW2_Handler(void)
 {
-    GPIO_PORTF_DATA_R ^= 0x8;
-    GPIO_PORTF_ICR_R = 0xff;
+    //Start with some nops and then try some dela
+
+    //GPIO_PORTF_DATA_R ^= 0x2;
+    global_counter ++;
+    //GPIO_PORTF_ICR_R = 0x10;
+    GPIO_PORTF_ICR_R = 0x10;
+    __asm(" DSB");
 }
 
 
@@ -76,7 +79,7 @@ void GPIO_PORTF_Init(void)
     //GPIOIEV -- Interropt Event  --> 0 for falling edge      --> 0x00
     GPIO_PORTF_IEV_R = 0x0;
 
-    //GPIOICR -- INterrpt clear -- must be cleared by writing 1 to corresponding bit --> 0xff
+    //GPIOICR -- Interript clear -- must be cleared by writing 1 to corresponding bit --> 0xff
     GPIO_PORTF_ICR_R = 0xff;
 
     //GPIOIM -- Interrupt Mask    --> 1 for unmasked (enabled)--> 0x01
