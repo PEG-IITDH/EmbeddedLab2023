@@ -26,8 +26,19 @@ int main(void)
 
 void SW2_Handler(void)
 {
-    GPIO_PORTF_DATA_R ^= 0x8;
-    GPIO_PORTF_ICR_R = 0xff;
+    //GPIO_PORTF_ICR_R = 0x11;
+    if(GPIO_PORTF_MIS_R & 0x01)
+    {
+        //PIN0 (SW2) pressed
+        GPIO_PORTF_DATA_R |=  0x8;
+
+    }
+    else if (GPIO_PORTF_MIS_R & 0x10)
+    {
+        GPIO_PORTF_DATA_R &= ~0x8;
+    }
+
+    GPIO_PORTF_ICR_R = 0x11;
 }
 
 
@@ -58,6 +69,10 @@ void GPIO_PORTF_Init(void)
     //Need to enable interrupt on SW1
 
     SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOF;
+
+    GPIO_PORTF_LOCK_R = 0x4C4F434B;     /* unlock commit register */
+    GPIO_PORTF_CR_R = 0xFF;             /* make PORTF0 configurable */
+
     GPIO_PORTF_DEN_R  = 0x1F;
     GPIO_PORTF_PUR_R  = 0x11;
     GPIO_PORTF_DIR_R  = 0x0E;
@@ -80,7 +95,7 @@ void GPIO_PORTF_Init(void)
     GPIO_PORTF_ICR_R = 0xff;
 
     //GPIOIM -- Interrupt Mask    --> 1 for unmasked (enabled)--> 0x01
-    GPIO_PORTF_IM_R = 0x10;
+    GPIO_PORTF_IM_R = 0x11;
 
     //GPIORIS -- Raw Int Status
     //GPIOMIS -- Masked Int Status
